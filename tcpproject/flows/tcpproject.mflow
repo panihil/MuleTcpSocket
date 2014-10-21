@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="tcpproject">
+    <global-element name="TCP connector" type="http://www.mulesoft.org/schema/mule/tcp/connector" entity-id="TCP connector#1">
+        <properties>
+            <property name="reuseAddress" value="true"/>
+            <property name="receiveBacklog" value="19999999"/>
+            <property name="serverSoTimeout" value="0"/>
+            <property name="socketSoLinger" value="0"/>
+            <property name="clientSoTimeout" value="0"/>
+            <property name="validateConnections"/>
+            <property name="sendTcpNoDelay"/>
+            <property name="keepAlive" value="true"/>
+            <property name="dispatcherPoolFactory-ref"/>
+            <property name="receiveBufferSize" value="19999999"/>
+            <property name="name" value="tcpConnector"/>
+            <property name="dispatcherFactory-ref"/>
+            <property name="keepSendSocketOpen" value="true"/>
+            <property name="dynamicNotification"/>
+            <property name="sendBufferSize"/>
+            <property name="auxiliary;index" value="1"/>
+            <property-collection name="@http://www.mulesoft.org/schema/mule/tcp/custom-protocol;0">
+                <property name="ref" value="CBP"/>
+                <property name="auxiliary;index" value="2"/>
+                <property name="auxiliary;wrapIn" value="2"/>
+            </property-collection>
+        </properties>
+    </global-element>
+    <global-element name="STDIO" type="http://www.mulesoft.org/schema/mule/stdio/connector" entity-id="STDIO#1">
+        <properties>
+            <property name="dispatcherPoolFactory-ref"/>
+            <property name="messageDelayTime"/>
+            <property name="promptMessage" value="?:"/>
+            <property name="outputMessageCode"/>
+            <property name="name" value="stdioConnector"/>
+            <property name="resourceBundle"/>
+            <property name="validateConnections"/>
+            <property name="dynamicNotification"/>
+            <property name="outputMessage" value="REG:"/>
+            <property name="promptMessageCode"/>
+            <property name="auxiliary;index" value="3"/>
+        </properties>
+    </global-element>
+    <global-element name="File" type="org.mule.tooling.ui.modules.core.global.fileConnector" entity-id="File#1">
+        <properties>
+            <property name="streaming" value="false"/>
+            <property name="reverseOrder"/>
+            <property name="moveToPattern"/>
+            <property name="workFileNamePattern"/>
+            <property name="workDirectory"/>
+            <property name="outputAppend" value="false"/>
+            <property name="pollingFrequency" value="1000"/>
+            <property name="readFromDirectory"/>
+            <property name="validateConnections"/>
+            <property name="comparator"/>
+            <property name="writeToDirectory"/>
+            <property name="dispatcherPoolFactory-ref"/>
+            <property name="serialiseObjects"/>
+            <property name="moveToDirectory"/>
+            <property name="fileAge"/>
+            <property name="recursive"/>
+            <property name="name" value="dummyFc"/>
+            <property name="autoDelete" value="true"/>
+            <property name="dynamicNotification"/>
+            <property name="outputPattern"/>
+            <property name="auxiliary;index" value="4"/>
+        </properties>
+    </global-element>
+    <global-element name="File" type="org.mule.tooling.ui.modules.core.global.fileConnector" entity-id="File#2">
+        <properties>
+            <property name="streaming" value="false"/>
+            <property name="reverseOrder"/>
+            <property name="moveToPattern"/>
+            <property name="workFileNamePattern"/>
+            <property name="workDirectory"/>
+            <property name="outputAppend"/>
+            <property name="pollingFrequency" value="10000"/>
+            <property name="readFromDirectory"/>
+            <property name="validateConnections"/>
+            <property name="comparator"/>
+            <property name="writeToDirectory"/>
+            <property name="dispatcherPoolFactory-ref"/>
+            <property name="serialiseObjects"/>
+            <property name="moveToDirectory"/>
+            <property name="fileAge"/>
+            <property name="recursive"/>
+            <property name="name" value="fc"/>
+            <property name="autoDelete" value="false"/>
+            <property name="dynamicNotification"/>
+            <property name="outputPattern"/>
+            <property name="auxiliary;index" value="5"/>
+        </properties>
+    </global-element>
+    <global-element name="Bean" type="http://www.springframework.org/schema/beans/bean" entity-id="Bean#1">
+        <properties>
+            <property name="factory-bean"/>
+            <property name="abstract"/>
+            <property name="scope"/>
+            <property name="init-method"/>
+            <property name="autowire-candidate"/>
+            <property name="factory-method"/>
+            <property name="class" value="p1.CustomByteProtocol"/>
+            <property name="parent"/>
+            <property name="children"/>
+            <property name="lazy-init"/>
+            <property name="auxiliary;wrappedIn" value="beans@spring@http://www.springframework.org/schema/beans"/>
+            <property name="id" value="CBP"/>
+            <property name="name" value="CBP"/>
+            <property name="primary"/>
+            <property name="autowire"/>
+            <property name="destroy-method"/>
+            <property name="auxiliary;wrapIn" value="6"/>
+            <property name="auxiliary;index" value="7"/>
+            <property name="depends-on"/>
+            <property-collection name="@http://www.springframework.org/schema/beans/property;0">
+                <property name="name" value="endToken"/>
+                <property name="value" value="${end}"/>
+                <property name="auxiliary;index" value="8"/>
+                <property name="auxiliary;wrapIn" value="8"/>
+            </property-collection>
+            <property-collection name="@http://www.springframework.org/schema/beans/property;1">
+                <property name="name" value="removeEndDelimiter"/>
+                <property name="value" value="true"/>
+                <property name="auxiliary;index" value="9"/>
+                <property name="auxiliary;wrapIn" value="9"/>
+            </property-collection>
+        </properties>
+    </global-element>
+    <flow SubFlow="false" name="testWriteToTcpSocket" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="9f480bb0-9746-4a26-9f7a-418fa5016c29">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="10"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#1">
+            <graphicalData x="0" y="0" width="0" height="0"/>
+            <endpoint direction="Inbound" message-exchange-pattern="OneWay" name="File" type="http://www.mulesoft.org/schema/mule/file/endpoint" entity-id="File#3">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="reverseOrder"/>
+                    <property name="moveToPattern"/>
+                    <property name="pollingFrequency"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="comparator"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="exchange-pattern" value="one-way"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="moveToDirectory"/>
+                    <property name="address"/>
+                    <property name="fileAge"/>
+                    <property name="path" value="/Users/manskema/Panihil"/>
+                    <property name="encoding" value="UTF-8"/>
+                    <property name="outputPattern"/>
+                    <property name="auxiliary;index" value="11"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout" value="10000"/>
+                    <property name="connector-ref"/>
+                </properties>
+            </endpoint>
+            <pattern name="File to Byte Array" type="http://www.mulesoft.org/schema/mule/file/file-to-byte-array-transformer" entity-id="File to Byte Array#1">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="auxiliary;index" value="13"/>
+                    <property name="mimeType"/>
+                </properties>
+            </pattern>
+            <pattern name="Groovy" type="http://www.mulesoft.org/schema/mule/scripting/groovyComponent" entity-id="Groovy#1">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="script-ref"/>
+                    <property name="auxiliary;index" value="14"/>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/scripting/script-for-properties;0">
+                        <property name="text" value="&#xA;            &#xA; log.info( &quot;payload size: &quot; + payload.size()  + &quot; Payload &quot; + payload ) ;&#xA;&#xA; return  payload;&#xA; &#xA; "/>
+                        <property name="engine" value="Groovy"/>
+                        <property name="auxiliary;index" value="15"/>
+                        <property name="auxiliary;wrapIn" value="15"/>
+                    </property-collection>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/scripting/script;0">
+                        <property name="text" value="&#xA;            &#xA; log.info( &quot;payload size: &quot; + payload.size()  + &quot; Payload &quot; + payload ) ;&#xA;&#xA; return  payload;&#xA; &#xA; "/>
+                        <property name="engine" value="Groovy"/>
+                        <property name="auxiliary;index" value="15"/>
+                        <property name="auxiliary;wrapIn" value="15"/>
+                    </property-collection>
+                </properties>
+            </pattern>
+            <endpoint direction="Outbound" message-exchange-pattern="RequestResponse" name="TCP" type="http://www.mulesoft.org/schema/mule/tcp/endpoint" entity-id="TCP#1">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="port" value="${listeningPort}"/>
+                    <property name="host" value="localhost"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="exchange-pattern"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="address"/>
+                    <property name="encoding"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="auxiliary;index" value="16"/>
+                    <property name="responseTimeout" value="10000"/>
+                    <property name="mimeType"/>
+                    <property name="connector-ref"/>
+                </properties>
+            </endpoint>
+        </lane>
+    </flow>
+    <flow SubFlow="false" name="SocketServerToWriteTo" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="e2b79870-7306-4020-9ae6-c3f15f429cf0">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="17"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#2">
+            <graphicalData x="0" y="0" width="0" height="0"/>
+            <endpoint direction="Inbound" message-exchange-pattern="OneWay" name="File" type="http://www.mulesoft.org/schema/mule/file/endpoint" entity-id="File#4">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="reverseOrder"/>
+                    <property name="moveToPattern"/>
+                    <property name="pollingFrequency"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="comparator"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="exchange-pattern" value="one-way"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="moveToDirectory"/>
+                    <property name="address"/>
+                    <property name="fileAge"/>
+                    <property name="name" value="DummyFile"/>
+                    <property name="path" value="dummmyFile"/>
+                    <property name="encoding"/>
+                    <property name="outputPattern"/>
+                    <property name="auxiliary;index" value="18"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout"/>
+                    <property name="connector-ref" value="dummyFc"/>
+                </properties>
+            </endpoint>
+            <pattern name="Java" type="http://www.mulesoft.org/schema/mule/core/component" entity-id="Java#1">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="class" value="edu.bcw.mule35.socket.HL7SocketServer"/>
+                    <property name="auxiliary;index" value="28"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+</mule-configuration>

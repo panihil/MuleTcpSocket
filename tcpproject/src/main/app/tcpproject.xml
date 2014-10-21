@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:tcp="http://www.mulesoft.org/schema/mule/tcp" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+   xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+   xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans"
+   version="CE-3.4.0" xmlns:stdio="http://www.mulesoft.org/schema/mule/stdio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.mulesoft.org/schema/mule/stdio http://www.mulesoft.org/schema/mule/stdio/3.5/mule-stdio.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.mulesoft.org/schema/mule/tcp http://www.mulesoft.org/schema/mule/tcp/current/mule-tcp.xsd">
+   <!-- -->
+   <!-- -->
+ 
+   <!--  -->
+   <tcp:connector name="tcpConnector" receiveBufferSize="19999999" receiveBacklog="19999999"
+      reuseAddress="true" clientSoTimeout="0" serverSoTimeout="0" socketSoLinger="0" keepAlive="true"
+      keepSendSocketOpen="true" doc:name="TCP connector">
+      <tcp:custom-protocol ref="CBP"  />
+   </tcp:connector>
+   <stdio:connector name="stdioConnector" outputMessage="REG:" promptMessage="?:" doc:name="STDIO" />
+   
+      <file:connector name="dummyFc" autoDelete="true" pollingFrequency="1000" streaming="false"  outputAppend="false"
+      />
+   
+   <file:connector name="fc" autoDelete="false" pollingFrequency="10000" streaming="false"
+      doc:name="File" />
+    <spring:beans>
+        <spring:bean id="CBP" name="CBP" class="p1.CustomByteProtocol" >
+            <spring:property name="endToken" value="${end}"/>
+            <spring:property name="removeEndDelimiter" value="true"></spring:property>
+        </spring:bean>
+    </spring:beans>
+   <flow name="testWriteToTcpSocket" doc:name="testWriteToTcpSocket">
+    <!--   <stdio:inbound-endpoint system="IN" encoding="UTF-8" connector-ref="stdioConnector"
+          /> -->
+       <file:inbound-endpoint responseTimeout="10000" doc:name="File" path="/Users/manskema/Panihil" encoding="UTF-8"> 
+         <file:filename-wildcard-filter pattern="formike2.txt" /> </file:inbound-endpoint> <file:file-to-byte-array-transformer 
+         doc:name="File to Byte Array"/>  
+      <scripting:component doc:name="Groovy">
+         <scripting:script engine="Groovy"><![CDATA[
+            
+ log.info( "payload size: " + payload.size()  + " Payload " + payload ) ;
+
+ return  payload;
+ 
+ ]]></scripting:script>
+      </scripting:component>
+      <tcp:outbound-endpoint host="localhost" port="${listeningPort}" responseTimeout="10000"
+         doc:name="TCP" />
+      <!-- <stdio:outbound-endpoint system="OUT" connector-ref="stdioConnector" encoding="UTF-8" doc:name="STDIO" 
+         /> -->
+   </flow>
+    <flow name="SocketServerToWriteTo" doc:name="SocketServerToWriteTo" >
+    
+       <file:inbound-endpoint name="DummyFile"
+ 					path="dummmyFile"  connector-ref="dummyFc" >
+					<message-properties-transformer  >
+						<add-message-property key="name" value="${name}" />
+						<add-message-property key="inboundMsgDir" value="${inboundMsgDir}" />
+						<add-message-property key="listeningPort" value="${listeningPort}" />
+						<add-message-property key="outboundIPName" value="${outboundIPName}" />
+						<add-message-property key="outboundPort" value="${outboundPort}" />
+						<add-message-property key="archiveMsgDir" value="${archiveMsgDir}" />
+						<add-message-property key="numSecsToWait" value="${numSecsToWait}" />
+						<add-message-property key="numOfTimesToRetry" value="${numOfTimesToRetry}" />
+					</message-properties-transformer>
+				</file:inbound-endpoint>
+             
+            
+                        <component class="edu.bcw.mule35.socket.HL7SocketServer" />
+            
+            
+    </flow>
+ 
+   
+   
+   
+   
+   <!-- 
+   <flow name="tcpprojectFlow1" doc:name="tcpprojectFlow1">
+      <tcp:inbound-endpoint connector-ref="tcpConnector" 
+         host="localhost" port="8080" responseTimeout="10000" doc:name="TCP" />
+      <byte-array-to-string-transformer doc:name="Byte Array to String"/>
+      <scripting:component doc:name="Groovy">
+         <scripting:script engine="Groovy"><![CDATA[
+          
+ log.info( "Now the payload size: " + payload.size()  + " Payload " + payload ) ;
+ return  payload  ;
+ 
+ ]]></scripting:script>
+      </scripting:component>
+      <stdio:outbound-endpoint system="OUT" connector-ref="stdioConnector"    encoding="UTF-8"
+         doc:name="STDIO"  />
+   </flow>
+   
+    -->
+</mule>
