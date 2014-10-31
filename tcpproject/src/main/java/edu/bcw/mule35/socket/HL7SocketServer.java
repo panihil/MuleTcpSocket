@@ -26,22 +26,22 @@ public class HL7SocketServer implements Callable
 	{
 		String name = context.getMessage()
 				.getProperty("name", PropertyScope.INVOCATION).toString();
-		String inboundMsgDir = context.getMessage()
+/*		String inboundMsgDir = context.getMessage()
 				.getProperty("inboundMsgDir", PropertyScope.INVOCATION)
-				.toString();
+				.toString();*/
 		String listeningPort = context.getMessage()
 				.getProperty("listeningPort", PropertyScope.INVOCATION)
 				.toString();
 
-		String outboundIPName = context.getMessage()
+/*		String outboundIPName = context.getMessage()
 				.getProperty("outboundIPName", PropertyScope.INVOCATION)
-				.toString();
+				.toString(); 
 		String outboundPort = context.getMessage()
 				.getProperty("outboundPort", PropertyScope.INVOCATION)
 				.toString();
 		String archiveMsgDir = context.getMessage()
 				.getProperty("archiveMsgDir", PropertyScope.INVOCATION)
-				.toString();
+				.toString();*/
 
 		String numOfTimesToRetry = context.getMessage()
 				.getProperty("numOfTimesToRetry", PropertyScope.INVOCATION)
@@ -53,9 +53,9 @@ public class HL7SocketServer implements Callable
 		ServerHL7 serverHL7 = new ServerHL7(Integer.parseInt(listeningPort),
 				name);
 
-		serverHL7.setInboundMsgsDir(inboundMsgDir);
+	/*	serverHL7.setInboundMsgsDir(inboundMsgDir);
 		serverHL7.setOutboundConn(outboundIPName,
-				Integer.parseInt(outboundPort), archiveMsgDir);
+				Integer.parseInt(outboundPort), archiveMsgDir); */
 		serverHL7.setNumOfTimesToRetry(Integer.parseInt(numOfTimesToRetry));
 		serverHL7.setNumSecsToWait(Integer.parseInt(numSecsToWait));
 		(new Thread(serverHL7)).start();

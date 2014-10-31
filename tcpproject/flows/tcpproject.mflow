@@ -49,7 +49,7 @@
             <property name="workDirectory"/>
             <property name="outputAppend" value="false"/>
             <property name="pollingFrequency" value="1000"/>
-            <property name="readFromDirectory"/>
+            <property name="readFromDirectory" value="/Users/manskema/ToShare/git/MuleTcpSocket/tcpproject/data/in/"/>
             <property name="validateConnections"/>
             <property name="comparator"/>
             <property name="writeToDirectory"/>
@@ -59,7 +59,7 @@
             <property name="fileAge"/>
             <property name="recursive"/>
             <property name="name" value="dummyFc"/>
-            <property name="autoDelete" value="true"/>
+            <property name="autoDelete" value="false"/>
             <property name="dynamicNotification"/>
             <property name="outputPattern"/>
             <property name="auxiliary;index" value="4"/>
@@ -125,9 +125,9 @@
             </property-collection>
         </properties>
     </global-element>
-    <flow SubFlow="false" name="testWriteToTcpSocket" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="9f480bb0-9746-4a26-9f7a-418fa5016c29">
+    <flow SubFlow="false" name="testWriteToTcpSocket" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="1dd2e4ae-260f-417c-80da-205dc4bb7916">
         <properties>
-            <property name="initialState"/>
+            <property name="initialState" value="stopped"/>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
             <property name="bussinessEventsLabel"/>
@@ -158,7 +158,7 @@
                     <property name="auxiliary;index" value="11"/>
                     <property name="mimeType"/>
                     <property name="responseTimeout" value="10000"/>
-                    <property name="connector-ref"/>
+                    <property name="connector-ref" value="fc"/>
                 </properties>
             </endpoint>
             <pattern name="File to Byte Array" type="http://www.mulesoft.org/schema/mule/file/file-to-byte-array-transformer" entity-id="File to Byte Array#1">
@@ -212,9 +212,9 @@
             </endpoint>
         </lane>
     </flow>
-    <flow SubFlow="false" name="SocketServerToWriteTo" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="e2b79870-7306-4020-9ae6-c3f15f429cf0">
+    <flow SubFlow="false" name="SocketServerToWriteTo" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="6b03bc47-96be-4bbb-bd92-1cecd7b834d0">
         <properties>
-            <property name="initialState"/>
+            <property name="initialState" value="started"/>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
             <property name="bussinessEventsLabel"/>
@@ -253,7 +253,7 @@
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
                     <property name="class" value="edu.bcw.mule35.socket.HL7SocketServer"/>
-                    <property name="auxiliary;index" value="28"/>
+                    <property name="auxiliary;index" value="24"/>
                 </properties>
             </pattern>
         </lane>

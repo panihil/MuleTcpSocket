@@ -116,6 +116,8 @@ public class ServerHL7 extends Server
 	{
 		// TODO Auto-generated method stub
 
+		log.info("Write msg to db " + string );
+
 	}
 
 	@Override

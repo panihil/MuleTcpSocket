@@ -20,7 +20,7 @@ http://www.mulesoft.org/schema/mule/tcp http://www.mulesoft.org/schema/mule/tcp/
    </tcp:connector>
    <stdio:connector name="stdioConnector" outputMessage="REG:" promptMessage="?:" doc:name="STDIO" />
    
-      <file:connector name="dummyFc" autoDelete="true" pollingFrequency="1000" streaming="false"  outputAppend="false"
+      <file:connector name="dummyFc" autoDelete="false" pollingFrequency="1000" streaming="false"  outputAppend="false" readFromDirectory="/Users/manskema/ToShare/git/MuleTcpSocket/tcpproject/data/in/"
       />
    
    <file:connector name="fc" autoDelete="false" pollingFrequency="10000" streaming="false"
@@ -31,10 +31,10 @@ http://www.mulesoft.org/schema/mule/tcp http://www.mulesoft.org/schema/mule/tcp/
             <spring:property name="removeEndDelimiter" value="true"></spring:property>
         </spring:bean>
     </spring:beans>
-   <flow name="testWriteToTcpSocket" doc:name="testWriteToTcpSocket">
+   <flow name="testWriteToTcpSocket" doc:name="testWriteToTcpSocket" initialState="stopped">
     <!--   <stdio:inbound-endpoint system="IN" encoding="UTF-8" connector-ref="stdioConnector"
           /> -->
-       <file:inbound-endpoint responseTimeout="10000" doc:name="File" path="/Users/manskema/Panihil" encoding="UTF-8"> 
+       <file:inbound-endpoint responseTimeout="10000" doc:name="File" path="/Users/manskema/Panihil" encoding="UTF-8" connector-ref="fc"> 
          <file:filename-wildcard-filter pattern="formike2.txt" /> </file:inbound-endpoint> <file:file-to-byte-array-transformer 
          doc:name="File to Byte Array"/>  
       <scripting:component doc:name="Groovy">
@@ -51,17 +51,18 @@ http://www.mulesoft.org/schema/mule/tcp http://www.mulesoft.org/schema/mule/tcp/
       <!-- <stdio:outbound-endpoint system="OUT" connector-ref="stdioConnector" encoding="UTF-8" doc:name="STDIO" 
          /> -->
    </flow>
-    <flow name="SocketServerToWriteTo" doc:name="SocketServerToWriteTo" >
+    <flow name="SocketServerToWriteTo" doc:name="SocketServerToWriteTo"  initialState="started">
     
        <file:inbound-endpoint name="DummyFile"
  					path="dummmyFile"  connector-ref="dummyFc" >
-					<message-properties-transformer  >
-						<add-message-property key="name" value="${name}" />
-						<add-message-property key="inboundMsgDir" value="${inboundMsgDir}" />
-						<add-message-property key="listeningPort" value="${listeningPort}" />
+					<message-properties-transformer  scope="invocation">
+						<add-message-property key="name" value="${name}"  />
+                                    <add-message-property key="listeningPort" value="${listeningPort}" />
+                  
+					<!-- <add-message-property key="inboundMsgDir" value="${inboundMsgDir}" /> 
 						<add-message-property key="outboundIPName" value="${outboundIPName}" />
 						<add-message-property key="outboundPort" value="${outboundPort}" />
-						<add-message-property key="archiveMsgDir" value="${archiveMsgDir}" />
+						<add-message-property key="archiveMsgDir" value="${archiveMsgDir}" />  --> 
 						<add-message-property key="numSecsToWait" value="${numSecsToWait}" />
 						<add-message-property key="numOfTimesToRetry" value="${numOfTimesToRetry}" />
 					</message-properties-transformer>
